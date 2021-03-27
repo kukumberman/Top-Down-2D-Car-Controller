@@ -5,30 +5,27 @@ using UnityEngine;
 public class TopDownCarController : MonoBehaviour
 {
     [Header("Car settings")]
-    public float driftFactor = 0.95f;
-    public float accelerationFactor = 30.0f;
-    public float turnFactor = 3.5f;
-    public float maxSpeed = 20;
+    [SerializeField, Range(0, 1)] private float driftFactor = 0.9f;
+    [SerializeField] private float accelerationFactor = 30.0f;
+    [SerializeField] private float turnFactor = 3.5f;
+    [SerializeField] private float maxSpeed = 20;
+    [SerializeField, Range(0, 1)] private float steeringFactor = 0.5f;
 
-    //Local variables
-    float accelerationInput = 0;
-    float steeringInput = 0;
+    private float accelerationInput = 0;
+    private float steeringInput = 0;
 
-    float rotationAngle = 0;
+    private float rotationAngle = 0;
 
-    float velocityVsUp = 0;
+    private float velocityVsUp = 0;
 
-    //Components
-    Rigidbody2D carRigidbody2D;
+    private Rigidbody2D carRigidbody2D;
 
-    //Awake is called when the script instance is being loaded.
-    void Awake()
+    private void Awake()
     {
         carRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
-    //Frame-rate independent for physics calculations.
-    void FixedUpdate()
+    public void OnFixedUpdate()
     {
         ApplyEngineForce();
 
@@ -37,26 +34,28 @@ public class TopDownCarController : MonoBehaviour
         ApplySteering();
     }
 
-    void ApplyEngineForce()
+    private void ApplyEngineForce()
     {
         //Apply drag if there is no accelerationInput so the car stops when the player lets go of the accelerator
         if (accelerationInput == 0)
             carRigidbody2D.drag = Mathf.Lerp(carRigidbody2D.drag, 3.0f, Time.fixedDeltaTime * 3);
         else carRigidbody2D.drag = 0;
 
+        Vector3 velocity = carRigidbody2D.velocity;
+
         //Caculate how much "forward" we are going in terms of the direction of our velocity
-        velocityVsUp = Vector2.Dot(transform.up, carRigidbody2D.velocity);
+        velocityVsUp = Vector2.Dot(transform.up, velocity);
 
         //Limit so we cannot go faster than the max speed in the "forward" direction
         if (velocityVsUp > maxSpeed && accelerationInput > 0)
             return;
 
         //Limit so we cannot go faster than the 50% of max speed in the "reverse" direction
-        if (velocityVsUp < -maxSpeed*0.5f && accelerationInput < 0)
+        if (velocityVsUp < -maxSpeed * 0.5f && accelerationInput < 0)
             return;
 
         //Limit so we cannot go faster in any direction while accelerating
-        if (carRigidbody2D.velocity.sqrMagnitude > maxSpeed * maxSpeed && accelerationInput > 0)
+        if (velocity.sqrMagnitude > maxSpeed * maxSpeed && accelerationInput > 0)
             return;
 
         //Create a force for the engine
@@ -66,30 +65,34 @@ public class TopDownCarController : MonoBehaviour
         carRigidbody2D.AddForce(engineForceVector, ForceMode2D.Force);
     }
 
-    void ApplySteering()
+    private void ApplySteering()
     {
         //Limit the cars ability to turn when moving slowly
-        float minSpeedBeforeAllowTurningFactor = (carRigidbody2D.velocity.magnitude / 2);
+        float minSpeedBeforeAllowTurningFactor = carRigidbody2D.velocity.magnitude * steeringFactor;
         minSpeedBeforeAllowTurningFactor = Mathf.Clamp01(minSpeedBeforeAllowTurningFactor);
 
         //Update the rotation angle based on input
         rotationAngle -= steeringInput * turnFactor * minSpeedBeforeAllowTurningFactor;
 
+        rotationAngle %= 360;
+
         //Apply steering by rotating the car object
         carRigidbody2D.MoveRotation(rotationAngle);
     }
 
-    void KillOrthogonalVelocity()
+    private void KillOrthogonalVelocity()
     {
+        Vector3 velocity = carRigidbody2D.velocity;
+
         //Get forward and right velocity of the car
-        Vector2 forwardVelocity = transform.up * Vector2.Dot(carRigidbody2D.velocity, transform.up);
-        Vector2 rightVelocity = transform.right * Vector2.Dot(carRigidbody2D.velocity, transform.right);
+        Vector2 forwardVelocity = transform.up * Vector2.Dot(velocity, transform.up);
+        Vector2 rightVelocity = transform.right * Vector2.Dot(velocity, transform.right);
 
         //Kill the orthogonal velocity (side velocity) based on how much the car should drift. 
         carRigidbody2D.velocity = forwardVelocity + rightVelocity * driftFactor;
     }
 
-    float GetLateralVelocity()
+    private float GetLateralVelocity()
     {
         //Returns how how fast the car is moving sideways. 
         return Vector2.Dot(transform.right, carRigidbody2D.velocity);

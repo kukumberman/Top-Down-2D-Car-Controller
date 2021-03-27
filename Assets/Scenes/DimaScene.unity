@@ -9871,6 +9871,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b369ae0140b5f64e8fc26768af33e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offsetSpeed: 1
+  offsetAmount: 2
 --- !u!114 &205166016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9887,6 +9889,7 @@ MonoBehaviour:
   accelerationFactor: 40
   turnFactor: 5
   maxSpeed: 25
+  steeringFactor: 0.5
 --- !u!50 &205166017
 Rigidbody2D:
   serializedVersion: 4
@@ -10249,6 +10252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b369ae0140b5f64e8fc26768af33e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offsetSpeed: 1
+  offsetAmount: 2
 --- !u!114 &494546017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10265,6 +10270,7 @@ MonoBehaviour:
   accelerationFactor: 40
   turnFactor: 5
   maxSpeed: 25
+  steeringFactor: 0.5
 --- !u!50 &494546018
 Rigidbody2D:
   serializedVersion: 4
@@ -25050,7 +25056,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -34884,6 +34890,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b369ae0140b5f64e8fc26768af33e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offsetSpeed: 1
+  offsetAmount: 2
 --- !u!114 &1157869480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34900,6 +34908,7 @@ MonoBehaviour:
   accelerationFactor: 40
   turnFactor: 5
   maxSpeed: 25
+  steeringFactor: 0.5
 --- !u!50 &1157869481
 Rigidbody2D:
   serializedVersion: 4
@@ -40606,9 +40615,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1803405575}
   - component: {fileID: 1803405574}
+  - component: {fileID: 1803405577}
   - component: {fileID: 1803405573}
   - component: {fileID: 1803405576}
-  - component: {fileID: 1803405577}
   m_Layer: 0
   m_Name: '[SimpleAI]'
   m_TagString: Untagged
@@ -40628,10 +40637,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 324d77dff9c56eb46ac348c9811aaab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  driftFactor: 0.93
-  accelerationFactor: 40
+  driftFactor: 0.9
+  accelerationFactor: 30
   turnFactor: 5
   maxSpeed: 25
+  steeringFactor: 0.5
 --- !u!50 &1803405574
 Rigidbody2D:
   serializedVersion: 4
@@ -40680,6 +40690,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b369ae0140b5f64e8fc26768af33e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offsetSpeed: 2
+  offsetAmount: 1
 --- !u!61 &1803405577
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -40957,7 +40969,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1878020684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40970,6 +40982,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b369ae0140b5f64e8fc26768af33e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offsetSpeed: 1
+  offsetAmount: 2
 --- !u!114 &1878020685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40982,10 +40996,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 324d77dff9c56eb46ac348c9811aaab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  driftFactor: 0.93
-  accelerationFactor: 40
+  driftFactor: 0.9
+  accelerationFactor: 30
   turnFactor: 5
   maxSpeed: 25
+  steeringFactor: 0.5
 --- !u!50 &1878020686
 Rigidbody2D:
   serializedVersion: 4
@@ -56233,7 +56248,7 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0.14509805}
+      key0: {r: 0, g: 0, b: 0, a: 0.2509804}
       key1: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -56295,7 +56310,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6558350184057802677}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.64299965, y: -0.8399999, z: 0}
+  m_LocalPosition: {x: 0.5, y: -0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6558350185498102786}
@@ -56448,7 +56463,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6558350184324722311}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.64299965, y: -0.8399999, z: 0}
+  m_LocalPosition: {x: -0.5, y: -0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6558350185498102786}
@@ -56515,7 +56530,7 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 0, b: 0, a: 0.14509805}
+      key0: {r: 0, g: 0, b: 0, a: 0.2509804}
       key1: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -61595,6 +61610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c64634a4858211448ec6e62367bd1ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraController: {fileID: 362431724}
 --- !u!114 &6558350185230976609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61607,10 +61623,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 324d77dff9c56eb46ac348c9811aaab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  driftFactor: 0.93
+  driftFactor: 0.8
   accelerationFactor: 30
   turnFactor: 3.5
   maxSpeed: 20
+  steeringFactor: 0.15
 --- !u!1 &6558350185230976620
 GameObject:
   m_ObjectHideFlags: 0
@@ -61621,10 +61638,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6558350185230976623}
   - component: {fileID: 6558350185230976621}
+  - component: {fileID: 6558350185230976624}
   - component: {fileID: 6558350185230976609}
   - component: {fileID: 6558350185230976608}
   - component: {fileID: 6558350185230976622}
-  - component: {fileID: 6558350185230976624}
   m_Layer: 0
   m_Name: '[Car Controller]'
   m_TagString: Untagged

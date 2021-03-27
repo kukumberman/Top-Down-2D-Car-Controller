@@ -4,31 +4,32 @@ using UnityEngine;
 
 public class CarInputHandler : MonoBehaviour
 {
-    //Components
-    TopDownCarController topDownCarController;
+    [SerializeField] private SimpleCameraController cameraController = null;
 
-    //Awake is called when the script instance is being loaded.
-    void Awake()
+    private TopDownCarController topDownCarController = null;
+
+    private Vector2 inputVector = Vector2.zero;
+
+    private void Awake()
     {
         topDownCarController = GetComponent<TopDownCarController>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        
-    }
-
-    // Update is called once per frame and is frame dependent
-    void Update()
-    {
-        Vector2 inputVector = Vector2.zero;
-
-        //Get input from Unity's input system.
         inputVector.x = Input.GetAxis("Horizontal");
         inputVector.y = Input.GetAxis("Vertical");
 
-        //Send the input to the car controller.
         topDownCarController.SetInputVector(inputVector);
+    }
+
+    private void LateUpdate()
+    {
+        cameraController.HandlePosition(transform);
+    }
+
+    private void FixedUpdate()
+    {
+        topDownCarController.OnFixedUpdate();
     }
 }

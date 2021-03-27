@@ -8,9 +8,14 @@ public class SimpleCameraController : MonoBehaviour
 
     [SerializeField] private float amount = 1f;
 
-    private void LateUpdate()
+    public void HandlePosition()
     {
         var pos = Vector3.Lerp(transform.position, target.position, amount * Time.deltaTime);
         transform.position = pos;
+    }
+
+    public void HandlePosition(Transform target)
+    {
+        transform.position = target.position;
     }
 }
