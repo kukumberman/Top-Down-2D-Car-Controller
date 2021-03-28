@@ -2,17 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathNode : MonoBehaviour
+public class PathNode
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private bool visitedAtOnce = false;
 
-    // Update is called once per frame
-    void Update()
+    public float Distance = 0;
+    public PathNodeObject Node;
+
+    public void SetDistance(float distance)
     {
-        
+        if (!visitedAtOnce)
+        {
+            Distance = distance;
+            visitedAtOnce = true;
+        }
+        else
+        {
+            if (distance < Distance)
+            {
+                Distance = distance;
+            }
+        }
     }
 }

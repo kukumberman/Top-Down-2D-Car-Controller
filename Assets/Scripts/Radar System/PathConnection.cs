@@ -7,10 +7,22 @@ public class PathConnection
     public Vector3 A { get; }
     public Vector3 B { get; }
 
-    public PathConnection(Vector3 a, Vector3 b)
+    public PathNodeObject NodeA { get; }
+    public PathNodeObject NodeB { get; }
+
+    //public PathConnection(Vector3 a, Vector3 b)
+    //{
+    //    A = a;
+    //    B = b;
+    //}
+
+    public PathConnection(PathNodeObject a, PathNodeObject b)
     {
-        A = a;
-        B = b;
+        NodeA = a;
+        NodeB = b;
+
+        A = NodeA.transform.position;
+        B = NodeB.transform.position;
     }
 
     public bool IsEqual(PathConnection connection)

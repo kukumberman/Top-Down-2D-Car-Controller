@@ -8,36 +8,20 @@ public class PathNodeObject : MonoBehaviour
 
     public List<PathNodeObject> ConnectedNodes => connectedNodes;
 
-    private void OnDrawGizmos()
-    {
-        var color = Color.black;
-        color.a = 0.2f;
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Vector3 a = transform.position;
 
-        Gizmos.color = color;
+    //    Gizmos.DrawSphere(a, 0.5f);
 
-        Vector3 a = transform.position;
+    //    Gizmos.color = Color.green;
 
-        for (int i = 0, length = connectedNodes.Count; i < length; i++)
-        {
-            Vector3 b = connectedNodes[i].transform.position;
-            Gizmos.DrawLine(a, b);
-        }
-    }
+    //    for (int i = 0, length = connectedNodes.Count; i < length; i++)
+    //    {
+    //        Vector3 b = connectedNodes[i].transform.position;
+    //        Gizmos.DrawLine(a, b);
 
-    private void OnDrawGizmosSelected()
-    {
-        Vector3 a = transform.position;
-
-        Gizmos.DrawSphere(a, 0.5f);
-
-        Gizmos.color = Color.green;
-
-        for (int i = 0, length = connectedNodes.Count; i < length; i++)
-        {
-            Vector3 b = connectedNodes[i].transform.position;
-            Gizmos.DrawLine(a, b);
-
-            Gizmos.DrawSphere(b, 0.5f);
-        }
-    }
+    //        Gizmos.DrawSphere(b, 0.5f);
+    //    }
+    //}
 }

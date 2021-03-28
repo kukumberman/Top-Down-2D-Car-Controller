@@ -1,19 +1,36 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+// https://www.youtube.com/watch?v=pVfj6mxhdMw
+
+[System.Serializable]
+public class NodeInfo
+{
+    public Transform Point;
+    public Vector3 PositionOnLine;
+    public PathNodeObject Node;
+}
+
+
 public class PathManager : MonoBehaviour
 {
-    [SerializeField] private Transform startPoint = null;
+    [SerializeField] private LineRenderer lineRenderer = null;
+
+    [SerializeField] private NodeInfo startNode = new NodeInfo();
+    [SerializeField] private NodeInfo targetNode = new NodeInfo();
+
     [SerializeField] private List<PathNodeObject> nodes = new List<PathNodeObject>();
 
     [Header("Draw Options")]
+    [SerializeField] private bool drawGizmos = false;
     [SerializeField] private bool drawCenter = false;
     [SerializeField] private bool drawProjections = false;
 
-    private Vector3 pointOnLine = Vector3.zero;
-    private Vector3 cornerPoint = Vector3.zero;
-
     private List<PathConnection> connections = new List<PathConnection>();
+
+    public List<PathConnection> GetConnections() => connections;
+
+    public List<PathNodeObject> Nodes => nodes;
 
     private void Start()
     {
@@ -24,9 +41,11 @@ public class PathManager : MonoBehaviour
 
     private void Update()
     {
-        Vector3 a = startPoint.position;
+        GetClosestConnection(startNode.Point.position, startNode);
+        GetClosestConnection(targetNode.Point.position, targetNode);
 
-        GetClosestConnection(a, ref pointOnLine, ref cornerPoint);
+        //lineRenderer.positionCount = 3;
+        //lineRenderer.SetPositions(new Vector3[] { a, pointOnLine, cornerPoint });
     }
 
     private void CreateConnections()
@@ -39,7 +58,7 @@ public class PathManager : MonoBehaviour
             {
                 PathNodeObject b = a.ConnectedNodes[j];
 
-                PathConnection connection = new PathConnection(a.transform.position, b.transform.position);
+                PathConnection connection = new PathConnection(a, b);
 
                 if (!HasConnection(connection))
                 {
@@ -64,7 +83,7 @@ public class PathManager : MonoBehaviour
         return false;
     }
 
-    private void GetClosestConnection(Vector3 position, ref Vector3 projectedPosition, ref Vector3 cornerPosition)
+    private void GetClosestConnection(Vector3 position, NodeInfo nodeInfo)
     {
         PathConnection connection = null;
 
@@ -83,36 +102,72 @@ public class PathManager : MonoBehaviour
                 shortestDistance = distance;
                 connection = c;
 
-                projectedPosition = projected;
-                cornerPosition = t < 0.5f ? connection.A : connection.B; 
+                nodeInfo.PositionOnLine = projected;
+                nodeInfo.Node = t < 0.5f ? connection.NodeA : connection.NodeB;
+
+                //projectedPosition = projected;
+                //cornerPosition = t < 0.5f ? connection.A : connection.B; 
             }
         }
     }
 
     private void OnDrawGizmos()
     {
+        if (!drawGizmos) return;
+
+        DrawNodes();
+
         if (drawCenter)
         {
             DrawCenters();
         }
 
-        if (startPoint == null) return;
+        //if (startPoint == null) return;
 
-        Vector3 a = startPoint.position;
         float radius = 0.3f;
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(a, radius);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(pointOnLine, radius);
-
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(cornerPoint, radius);
+        DrawNodeInfo(startNode, radius);
+        DrawNodeInfo(targetNode, radius);
 
         if (drawProjections)
         {
+            Vector3 a = startNode.Point.position;
             DrawProjections(a);
+        }
+    }
+
+    private void DrawNodeInfo(NodeInfo nodeInfo, float radius)
+    {
+        if (nodeInfo.Point == null) return;
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(nodeInfo.Point.position, radius);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(nodeInfo.PositionOnLine, radius);
+
+        if (nodeInfo.Node == null) return;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(nodeInfo.Node.transform.position, radius);
+    }
+
+    private void DrawNodes()
+    {
+        Color color = Color.black;
+        //color.a = 0.2f;
+
+        Gizmos.color = color;
+
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            PathNodeObject a = nodes[i];
+
+            for (int j = 0; j < a.ConnectedNodes.Count; j++)
+            {
+                PathNodeObject b = a.ConnectedNodes[j];
+                Gizmos.DrawLine(a.transform.position, b.transform.position);
+            }
         }
     }
 
